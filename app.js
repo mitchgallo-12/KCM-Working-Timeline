@@ -141,6 +141,101 @@
     localStorage.removeItem('kcm_tracker_working');
   }
 
+  // ----- Add / Remove tasks & milestones -----
+  // Derive the id prefix used by existing items in this collection, falling
+  // back to the project id (e.g., "bwm", "drip"). Initiatives already carry
+  // their own id like "kcm-i1" or "es-i3", so we use that directly.
+  function idPrefix(project, initiative, kind) {
+    if (initiative) return initiative.id;
+    const items = (kind === 't' ? project.tasks : project.milestones) || [];
+    for (const it of items) {
+      const m = (it.id || '').match(/^(.*)-[mt]\d+$/);
+      if (m) return m[1];
+    }
+    return String(project.id).replace(/_/g, '-');
+  }
+
+  function nextId(project, kind, initiative) {
+    const prefix = idPrefix(project, initiative, kind);
+    // Scan every id in this project (top-level AND across initiatives) that
+    // matches `<prefix>-<kind><n>` so we never collide even if items were
+    // previously deleted mid-sequence.
+    let max = 0;
+    const scan = (arr) => {
+      for (const it of (arr || [])) {
+        const m = (it.id || '').match(new RegExp('^' + prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '-' + kind + '(\\d+)$'));
+        if (m) { const n = parseInt(m[1], 10); if (n > max) max = n; }
+      }
+    };
+    if (initiative) {
+      scan(kind === 't' ? initiative.tasks : initiative.milestones);
+    } else {
+      scan(kind === 't' ? project.tasks : project.milestones);
+    }
+    return `${prefix}-${kind}${max + 1}`;
+  }
+
+  function addMilestone(project, initiative) {
+    const m = {
+      id: nextId(project, 'm', initiative),
+      name: 'New milestone',
+      target_date: null,
+      status: 'Not Started',
+      owner: null,
+      notes: null
+    };
+    const arr = initiative ? (initiative.milestones = initiative.milestones || []) : (project.milestones = project.milestones || []);
+    arr.push(m);
+    markDirty(); saveWorkingCopy(); renderAll();
+    toast('Milestone added');
+  }
+
+  function deleteMilestone(project, initiative, id) {
+    if (!confirm('Delete this milestone? This cannot be undone until you reload from data.json.')) return;
+    const arr = initiative ? (initiative.milestones || []) : (project.milestones || []);
+    const idx = arr.findIndex(x => x.id === id);
+    if (idx < 0) return;
+    arr.splice(idx, 1);
+    markDirty(); saveWorkingCopy(); renderAll();
+    toast('Milestone deleted');
+  }
+
+  function addTask(project, initiative, workstreamHint) {
+    const t = {
+      id: nextId(project, 't', initiative),
+      workstream: workstreamHint || null,
+      name: 'New task',
+      owner: null,
+      status: 'Not Started',
+      priority: 'P3 - Standard',
+      start: null,
+      end: null,
+      percent_complete: null,
+      budget: null,
+      actual: null,
+      info_needed_from: null,
+      due_date: null,
+      counterparty: null,
+      next_action: null,
+      last_update: null,
+      notes: null
+    };
+    const arr = initiative ? (initiative.tasks = initiative.tasks || []) : (project.tasks = project.tasks || []);
+    arr.push(t);
+    markDirty(); saveWorkingCopy(); renderAll();
+    toast('Task added');
+  }
+
+  function deleteTask(project, initiative, id) {
+    if (!confirm('Delete this task? This cannot be undone until you reload from data.json.')) return;
+    const arr = initiative ? (initiative.tasks || []) : (project.tasks || []);
+    const idx = arr.findIndex(x => x.id === id);
+    if (idx < 0) return;
+    arr.splice(idx, 1);
+    markDirty(); saveWorkingCopy(); renderAll();
+    toast('Task deleted');
+  }
+
   function exportJSON() {
     state.data.meta.updated = todayISO();
     const json = JSON.stringify(state.data, null, 2);
@@ -516,7 +611,7 @@
         if (!workstreams[ws]) continue;
         const group = el('div', { class: 'workstream-group' }, [
           el('div', { class: 'ws-title' }, ws),
-          renderTaskTable(p, workstreams[ws], null)
+          renderTaskTable(p, workstreams[ws], null, ws)
         ]);
         wrap.appendChild(group);
       }
@@ -525,9 +620,24 @@
         if (state.data.taxonomies.workstreams.includes(ws)) continue;
         wrap.appendChild(el('div', { class: 'workstream-group' }, [
           el('div', { class: 'ws-title' }, ws),
-          renderTaskTable(p, workstreams[ws], null)
+          renderTaskTable(p, workstreams[ws], null, ws)
         ]));
       }
+    }
+
+    // If the project has no workstream-grouped tasks yet, offer an "+ Add task"
+    // entry point per workstream so the user can bootstrap the list.
+    if (!p.initiatives && (!p.tasks || !p.tasks.length)) {
+      wrap.appendChild(el('h2', { style: 'margin:26px 0 10px' }, 'Tasks'));
+      wrap.appendChild(el('div', { class: 'hint', style: 'margin-bottom:10px' }, 'No tasks yet. Start one under any workstream:'));
+      const bar = el('div', { style: 'display:flex;flex-wrap:wrap;gap:6px' });
+      for (const ws of state.data.taxonomies.workstreams) {
+        bar.appendChild(el('button', {
+          class: 'btn sm ghost',
+          onClick: () => addTask(p, null, ws)
+        }, `+ ${ws}`));
+      }
+      wrap.appendChild(bar);
     }
 
     return wrap;
@@ -537,25 +647,38 @@
     const wrap = el('div', { class: 'table-wrap' });
     const tbl = el('table', { class: 'data' }, [
       el('thead', {}, el('tr', {}, [
-        th('Milestone'), th('Target date'), th('Status'), th('Owner'), th('Notes')
+        th('Milestone'), th('Target date'), th('Status'), th('Owner'), th('Notes'), th('')
       ])),
       el('tbody', {}, milestones.map(m => el('tr', {}, [
-        el('td', {}, el('strong', {}, m.name)),
+        el('td', {}, el('strong', {}, editText(m, 'name', project))),
         el('td', {}, editDate(m, 'target_date', project)),
         el('td', {}, editSelect(m, 'status', state.data.taxonomies.statuses, project, () => renderAll())),
         el('td', {}, editSelect(m, 'owner', state.data.taxonomies.owners, project)),
-        el('td', {}, editText(m, 'notes', project, 'Add note...'))
+        el('td', {}, editText(m, 'notes', project, 'Add note...')),
+        el('td', { style: 'width:1%;white-space:nowrap' },
+          el('button', {
+            class: 'btn sm danger ghost',
+            title: 'Delete milestone',
+            onClick: () => deleteMilestone(project, initiative, m.id)
+          }, '×')
+        )
       ])))
     ]);
     wrap.appendChild(tbl);
+    wrap.appendChild(el('div', { style: 'margin-top:8px' }, [
+      el('button', {
+        class: 'btn sm ghost',
+        onClick: () => addMilestone(project, initiative)
+      }, '+ Add milestone')
+    ]));
     return wrap;
   }
 
-  function renderTaskTable(project, tasks, initiative) {
+  function renderTaskTable(project, tasks, initiative, workstreamHint) {
     const wrap = el('div', { class: 'table-wrap' });
     const tbl = el('table', { class: 'data' }, [
       el('thead', {}, el('tr', {}, [
-        th('Task'), th('Owner'), th('Status'), th('Priority'), th('Start'), th('End'), th('%'), th('Info needed')
+        th('Task'), th('Owner'), th('Status'), th('Priority'), th('Start'), th('End'), th('%'), th('Info needed'), th('')
       ])),
       el('tbody', {}, tasks.map(t => el('tr', {}, [
         el('td', {}, editText(t, 'name', project)),
@@ -565,10 +688,23 @@
         el('td', {}, editDate(t, 'start', project)),
         el('td', {}, editDate(t, 'end', project)),
         el('td', { class: 'num' }, editNumber(t, 'percent_complete', project, '0-100')),
-        el('td', {}, editText(t, 'info_needed_from', project, 'From...'))
+        el('td', {}, editText(t, 'info_needed_from', project, 'From...')),
+        el('td', { style: 'width:1%;white-space:nowrap' },
+          el('button', {
+            class: 'btn sm danger ghost',
+            title: 'Delete task',
+            onClick: () => deleteTask(project, initiative, t.id)
+          }, '×')
+        )
       ])))
     ]);
     wrap.appendChild(tbl);
+    wrap.appendChild(el('div', { style: 'margin-top:8px' }, [
+      el('button', {
+        class: 'btn sm ghost',
+        onClick: () => addTask(project, initiative, workstreamHint)
+      }, workstreamHint ? `+ Add task to ${workstreamHint}` : '+ Add task')
+    ]));
     return wrap;
   }
 
