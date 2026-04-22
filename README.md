@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/26982168/README.md)
 # KCM Project Tracker — Web
 
 A self-hosted project and capital-allocation tracker for Khepera Capital Management.
@@ -48,6 +49,18 @@ Then open http://localhost:8000 in your browser.
 ### Editing
 
 Click any cell — dates, dropdowns, text, numbers — to edit in place. Changes are staged in your browser's `localStorage` and flagged as "Unsaved changes" in the sidebar.
+
+### Adding & removing tasks and milestones
+
+Inside any project's detail view:
+
+- **Add a task** — click **"+ Add task to <Workstream>"** at the bottom of any workstream group. The new task inherits that workstream (edit the name in place). Inside KCM Internal / El Salvador initiatives, the button is simply **"+ Add task"** because the task belongs to the initiative, not a workstream.
+- **Add a milestone** — click **"+ Add milestone"** at the bottom of the milestone table (works for project-level milestones and for each initiative's milestone table).
+- **Delete** — click the red **×** at the right end of any task or milestone row. You'll be asked to confirm.
+
+Task and milestone IDs auto-increment using the existing prefix for that project/initiative (`drip-t12`, `drip-m15`, `es-i2-t3`, etc.) so exports stay consistent with the IDs already in `data.json`.
+
+As always, these edits are staged locally until you click **Export data.json** and commit the file.
 
 ### Exporting
 
