@@ -1,0 +1,358 @@
+{
+  "meta": {
+    "firm": "Khepera Capital Management",
+    "updated": "2026-04-22",
+    "version": "0.1.0",
+    "horizon_weeks": 52,
+    "horizon_start": "2026-02-27",
+    "horizon_end": "2027-02-19"
+  },
+  "taxonomies": {
+    "verticals": [
+      "Real Estate & Infrastructure",
+      "Aviation & Marine",
+      "Technology & Manufacturing",
+      "Firm / Internal"
+    ],
+    "workstreams": [
+      "Agreements",
+      "Analysis",
+      "Financials",
+      "Legal",
+      "Appraisals",
+      "ALTA / Surveys",
+      "Architecture",
+      "People Ops",
+      "Due Diligence",
+      "Correspondence",
+      "Reporting",
+      "Compliance",
+      "Summaries",
+      "Media & Assets"
+    ],
+    "expense_types": [
+      "Legal",
+      "Due Diligence",
+      "Consulting",
+      "Travel",
+      "Capital Deployed",
+      "Internal / Other"
+    ],
+    "statuses": [
+      "Not Started",
+      "In Progress",
+      "Waiting on Info",
+      "At Risk",
+      "Complete",
+      "Blocked"
+    ],
+    "priorities": [
+      "P1 - Critical",
+      "P2 - High",
+      "P3 - Standard",
+      "P4 - Watch"
+    ],
+    "owners": [
+      "Jay Moskowitz",
+      "Travis Guthrie",
+      "Mitch Gallo",
+      "Katherine Alano",
+      "Grayson Brown",
+      "Richard Carey",
+      "Rowan",
+      "External",
+      "TBD"
+    ],
+    "milestone_sets": {
+      "Real Estate & Infrastructure": [
+        "LOI Executed",
+        "PSA Executed",
+        "DD Complete",
+        "Financing Committed",
+        "Closing",
+        "Ops Handover"
+      ],
+      "Aviation & Marine": [
+        "LOI Executed",
+        "PSA Executed",
+        "DD Complete",
+        "Regulatory (USCG/ACOE/FAA)",
+        "Financing Committed",
+        "Closing",
+        "Ops Transfer"
+      ],
+      "Firm / Internal": [
+        "Scoped",
+        "Drafted",
+        "Reviewed",
+        "Approved",
+        "Rolled Out",
+        "Complete"
+      ]
+    }
+  },
+  "projects": [
+    {
+      "id": "bwm",
+      "name": "Big Water Marina",
+      "short_name": "BWM",
+      "vertical": "Aviation & Marine",
+      "stage": "DD finalization / Closing prep",
+      "counterparty": "Seller counsel (TBD)",
+      "lead_owner": "Mitch Gallo",
+      "total_budget": null,
+      "deployed_to_date": null,
+      "last_update": null,
+      "next_action": "Finalize ALTA survey review; coordinate USCG/ACOE permit status with seller counsel",
+      "milestones": [
+        {"id": "bwm-m1", "name": "LOI Executed", "target_date": null, "status": "Complete", "owner": null, "notes": null},
+        {"id": "bwm-m2", "name": "PSA Executed", "target_date": null, "status": "Complete", "owner": null, "notes": null},
+        {"id": "bwm-m3", "name": "DD Complete", "target_date": null, "status": "In Progress", "owner": null, "notes": null},
+        {"id": "bwm-m4", "name": "Regulatory (USCG/ACOE/FAA)", "target_date": null, "status": "Waiting on Info", "owner": null, "notes": "Permit status with seller counsel"},
+        {"id": "bwm-m5", "name": "Financing Committed", "target_date": null, "status": "Not Started", "owner": "Katherine Alano", "notes": null},
+        {"id": "bwm-m6", "name": "Closing", "target_date": null, "status": "Not Started", "owner": null, "notes": "Closing Action Plan dated 4/2/26"},
+        {"id": "bwm-m7", "name": "Ops Transfer", "target_date": null, "status": "Not Started", "owner": null, "notes": null}
+      ],
+      "tasks": [
+        {"id": "bwm-t1",  "workstream": "Agreements", "name": "Purchase Agreement — execution & countersigns", "owner": "Mitch Gallo", "status": "Complete", "priority": "P2 - High", "start": null, "end": null, "percent_complete": 100, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "bwm-t2",  "workstream": "Agreements", "name": "Operating Agreement — finalize", "owner": null, "status": "In Progress", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "bwm-t3",  "workstream": "Agreements", "name": "Non-Compete with seller", "owner": null, "status": "Not Started", "priority": "P3 - Standard", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "bwm-t4",  "workstream": "Agreements", "name": "Consulting agreements (post-close advisors)", "owner": null, "status": "Not Started", "priority": "P3 - Standard", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "bwm-t5",  "workstream": "Legal", "name": "Title review & commitment", "owner": null, "status": "Not Started", "priority": "P1 - Critical", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": "Stewart Title", "next_action": null, "last_update": null, "notes": null},
+        {"id": "bwm-t6",  "workstream": "Legal", "name": "Environmental Phase I review", "owner": null, "status": "Not Started", "priority": "P1 - Critical", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "bwm-t7",  "workstream": "Appraisals", "name": "Commercial appraisal — final report", "owner": null, "status": "Not Started", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "bwm-t8",  "workstream": "ALTA / Surveys", "name": "ALTA survey — final", "owner": null, "status": "Not Started", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "bwm-t9",  "workstream": "Financials", "name": "Financing commitment letter", "owner": "Katherine Alano", "status": "Not Started", "priority": "P1 - Critical", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": "KGI debt-lever / lien-to-equity structure"},
+        {"id": "bwm-t10", "workstream": "Financials", "name": "Wire instructions & closing funds", "owner": "Katherine Alano", "status": "Not Started", "priority": "P1 - Critical", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": "Stewart escrow is holdback vehicle"},
+        {"id": "bwm-t11", "workstream": "People Ops", "name": "Key employee identification & retention", "owner": null, "status": "Not Started", "priority": "P3 - Standard", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "bwm-t12", "workstream": "People Ops", "name": "Post-close transition plan", "owner": null, "status": "Not Started", "priority": "P3 - Standard", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "bwm-t13", "workstream": "Due Diligence", "name": "Final DD checklist close-out", "owner": null, "status": "In Progress", "priority": "P1 - Critical", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "bwm-t14", "workstream": "Compliance", "name": "USCG / ACOE permit status confirmation", "owner": null, "status": "Waiting on Info", "priority": "P1 - Critical", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": "Seller counsel", "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "bwm-t15", "workstream": "Correspondence", "name": "Seller counsel closing coordination", "owner": "Mitch Gallo", "status": "In Progress", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "bwm-t16", "workstream": "Reporting", "name": "Weekly closing update (internal)", "owner": "Mitch Gallo", "status": "In Progress", "priority": "P3 - Standard", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null}
+      ]
+    },
+    {
+      "id": "geejam",
+      "name": "GeeJam (Port Antonio)",
+      "short_name": "GeeJam",
+      "vertical": "Real Estate & Infrastructure",
+      "stage": "DD & Analysis underway (post-LOI, pre-PSA)",
+      "counterparty": "GeeJam Group / local counsel (TBD)",
+      "lead_owner": "Mitch Gallo",
+      "total_budget": null,
+      "deployed_to_date": null,
+      "last_update": null,
+      "next_action": "Close out architecture/consumer profile analysis; progress PSA negotiation",
+      "milestones": [
+        {"id": "gj-m1", "name": "LOI Executed", "target_date": null, "status": "Complete", "owner": null, "notes": null},
+        {"id": "gj-m2", "name": "PSA Executed", "target_date": null, "status": "In Progress", "owner": null, "notes": null},
+        {"id": "gj-m3", "name": "DD Complete", "target_date": null, "status": "In Progress", "owner": null, "notes": null},
+        {"id": "gj-m4", "name": "Financing Committed", "target_date": null, "status": "Not Started", "owner": "Katherine Alano", "notes": "Jamaica-specific structuring required"},
+        {"id": "gj-m5", "name": "Closing", "target_date": null, "status": "Not Started", "owner": null, "notes": null},
+        {"id": "gj-m6", "name": "Ops Handover", "target_date": null, "status": "Not Started", "owner": null, "notes": null}
+      ],
+      "tasks": [
+        {"id": "gj-t1", "workstream": "Agreements", "name": "LOI — executed", "owner": "Mitch Gallo", "status": "Complete", "priority": "P1 - Critical", "start": null, "end": null, "percent_complete": 100, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "gj-t2", "workstream": "Agreements", "name": "PSA — draft & negotiate", "owner": null, "status": "In Progress", "priority": "P1 - Critical", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "gj-t3", "workstream": "Agreements", "name": "Operating Agreement — draft", "owner": null, "status": "Not Started", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "gj-t4", "workstream": "Analysis", "name": "Market / consumer profile analysis", "owner": null, "status": "In Progress", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "gj-t5", "workstream": "Architecture", "name": "Site & program architectural review", "owner": null, "status": "In Progress", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "gj-t6", "workstream": "Financials", "name": "Underwriting model build", "owner": "Katherine Alano", "status": "Not Started", "priority": "P1 - Critical", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "gj-t7", "workstream": "Financials", "name": "Financing structure — Jamaica-specific", "owner": "Katherine Alano", "status": "Not Started", "priority": "P1 - Critical", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "gj-t8", "workstream": "Legal", "name": "Local counsel engagement (Jamaica)", "owner": null, "status": "Waiting on Info", "priority": "P1 - Critical", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": "Local counsel", "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "gj-t9", "workstream": "Due Diligence", "name": "Property / title DD", "owner": null, "status": "Not Started", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "gj-t10", "workstream": "Due Diligence", "name": "Regulatory / permitting DD", "owner": null, "status": "Not Started", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "gj-t11", "workstream": "Summaries", "name": "Investment committee memo", "owner": null, "status": "Not Started", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null}
+      ]
+    },
+    {
+      "id": "trapper",
+      "name": "Trapper Mine Colorado",
+      "short_name": "Trapper",
+      "vertical": "Real Estate & Infrastructure",
+      "stage": "LOI stage (early)",
+      "counterparty": "Seller (TBD)",
+      "lead_owner": "Mitch Gallo",
+      "total_budget": null,
+      "deployed_to_date": null,
+      "last_update": null,
+      "next_action": "Advance LOI; initiate market/operational analysis",
+      "milestones": [
+        {"id": "tr-m1", "name": "LOI Executed", "target_date": null, "status": "In Progress", "owner": "Mitch Gallo", "notes": null},
+        {"id": "tr-m2", "name": "PSA Executed", "target_date": null, "status": "Not Started", "owner": null, "notes": null},
+        {"id": "tr-m3", "name": "DD Complete", "target_date": null, "status": "Not Started", "owner": null, "notes": null},
+        {"id": "tr-m4", "name": "Financing Committed", "target_date": null, "status": "Not Started", "owner": null, "notes": null},
+        {"id": "tr-m5", "name": "Closing", "target_date": null, "status": "Not Started", "owner": null, "notes": null},
+        {"id": "tr-m6", "name": "Ops Handover", "target_date": null, "status": "Not Started", "owner": null, "notes": null}
+      ],
+      "tasks": [
+        {"id": "tr-t1", "workstream": "Agreements", "name": "LOI — draft & circulate", "owner": "Mitch Gallo", "status": "In Progress", "priority": "P1 - Critical", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "tr-t2", "workstream": "Analysis", "name": "Market/operational analysis — initial", "owner": null, "status": "Not Started", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "tr-t3", "workstream": "Analysis", "name": "Technical / reserves review", "owner": null, "status": "Not Started", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "tr-t4", "workstream": "Financials", "name": "Preliminary underwriting", "owner": "Katherine Alano", "status": "Not Started", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "tr-t5", "workstream": "Summaries", "name": "Deal summary memo", "owner": null, "status": "Not Started", "priority": "P3 - Standard", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null}
+      ]
+    },
+    {
+      "id": "vassar",
+      "name": "Vassar Michigan",
+      "short_name": "Vassar",
+      "vertical": "Real Estate & Infrastructure",
+      "stage": "LOI executed / PSA draft",
+      "counterparty": "Seller (TBD)",
+      "lead_owner": "Mitch Gallo",
+      "total_budget": null,
+      "deployed_to_date": null,
+      "last_update": null,
+      "next_action": "Progress PSA draft; scope DD workstreams",
+      "milestones": [
+        {"id": "vs-m1", "name": "LOI Executed", "target_date": null, "status": "Complete", "owner": null, "notes": null},
+        {"id": "vs-m2", "name": "PSA Executed", "target_date": null, "status": "In Progress", "owner": null, "notes": null},
+        {"id": "vs-m3", "name": "DD Complete", "target_date": null, "status": "Not Started", "owner": null, "notes": null},
+        {"id": "vs-m4", "name": "Financing Committed", "target_date": null, "status": "Not Started", "owner": null, "notes": null},
+        {"id": "vs-m5", "name": "Closing", "target_date": null, "status": "Not Started", "owner": null, "notes": null},
+        {"id": "vs-m6", "name": "Ops Handover", "target_date": null, "status": "Not Started", "owner": null, "notes": null}
+      ],
+      "tasks": [
+        {"id": "vs-t1", "workstream": "Agreements", "name": "LOI — executed", "owner": "Mitch Gallo", "status": "Complete", "priority": "P1 - Critical", "start": null, "end": null, "percent_complete": 100, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "vs-t2", "workstream": "Agreements", "name": "PSA — draft", "owner": null, "status": "In Progress", "priority": "P1 - Critical", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "vs-t3", "workstream": "Analysis", "name": "Market analysis", "owner": null, "status": "Not Started", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "vs-t4", "workstream": "Analysis", "name": "Operational analysis", "owner": null, "status": "Not Started", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "vs-t5", "workstream": "Financials", "name": "Preliminary underwriting", "owner": "Katherine Alano", "status": "Not Started", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null},
+        {"id": "vs-t6", "workstream": "Summaries", "name": "IC memo — draft", "owner": null, "status": "Not Started", "priority": "P3 - Standard", "start": null, "end": null, "percent_complete": null, "budget": null, "actual": null, "info_needed_from": null, "due_date": null, "counterparty": null, "next_action": null, "last_update": null, "notes": null}
+      ]
+    },
+    {
+      "id": "kcm_internal",
+      "name": "KCM Internal",
+      "short_name": "KCM Internal",
+      "vertical": "Firm / Internal",
+      "stage": "Multiple initiatives in flight",
+      "counterparty": "Internal",
+      "lead_owner": "Mitch Gallo",
+      "total_budget": null,
+      "deployed_to_date": null,
+      "last_update": null,
+      "next_action": "Complete onboarding packet; resolve Rowan & Pillar II open items; advance EA hire",
+      "initiatives": [
+        {
+          "id": "kcm-i1",
+          "name": "Onboarding System",
+          "milestones": [
+            {"id": "kcm-i1-m1", "name": "Packet drafted", "target_date": null, "status": "Complete", "owner": null, "notes": null},
+            {"id": "kcm-i1-m2", "name": "Fully populated", "target_date": null, "status": "In Progress", "owner": null, "notes": null},
+            {"id": "kcm-i1-m3", "name": "Tech systems section", "target_date": null, "status": "Not Started", "owner": null, "notes": null},
+            {"id": "kcm-i1-m4", "name": "Role-specific tracks", "target_date": null, "status": "Not Started", "owner": null, "notes": null},
+            {"id": "kcm-i1-m5", "name": "Internal context doc", "target_date": null, "status": "Not Started", "owner": null, "notes": null},
+            {"id": "kcm-i1-m6", "name": "Rolled out", "target_date": null, "status": "Not Started", "owner": null, "notes": null}
+          ],
+          "tasks": [
+            {"id": "kcm-i1-t1", "name": "Complete placeholder fields across onboarding docs", "owner": "Mitch Gallo", "status": "In Progress", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "notes": null},
+            {"id": "kcm-i1-t2", "name": "Draft technology systems onboarding section", "owner": null, "status": "Not Started", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "notes": null},
+            {"id": "kcm-i1-t3", "name": "Define role-specific onboarding tracks", "owner": null, "status": "Not Started", "priority": "P3 - Standard", "start": null, "end": null, "percent_complete": null, "notes": null},
+            {"id": "kcm-i1-t4", "name": "Write internal context summary document", "owner": null, "status": "Not Started", "priority": "P3 - Standard", "start": null, "end": null, "percent_complete": null, "notes": null}
+          ]
+        },
+        {
+          "id": "kcm-i2",
+          "name": "Website Copy",
+          "milestones": [
+            {"id": "kcm-i2-m1", "name": "Homepage draft", "target_date": null, "status": "Complete", "owner": null, "notes": null},
+            {"id": "kcm-i2-m2", "name": "Four-pillar page", "target_date": null, "status": "Complete", "owner": null, "notes": null},
+            {"id": "kcm-i2-m3", "name": "Consulting page", "target_date": null, "status": "In Progress", "owner": null, "notes": null},
+            {"id": "kcm-i2-m4", "name": "Rowan profile complete", "target_date": null, "status": "Waiting on Info", "owner": "Mitch Gallo", "notes": "Need last name + email"},
+            {"id": "kcm-i2-m5", "name": "Pillar II naming approved", "target_date": null, "status": "Waiting on Info", "owner": null, "notes": "'Engineered Interdependence' pending team approval"},
+            {"id": "kcm-i2-m6", "name": "Live", "target_date": null, "status": "Not Started", "owner": null, "notes": null}
+          ],
+          "tasks": [
+            {"id": "kcm-i2-t1", "name": "Confirm 'Engineered Interdependence' Pillar II naming with team", "owner": "Mitch Gallo", "status": "Waiting on Info", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "notes": null},
+            {"id": "kcm-i2-t2", "name": "Insert Rowan's last name + email on Consulting page", "owner": "Mitch Gallo", "status": "Waiting on Info", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "notes": null},
+            {"id": "kcm-i2-t3", "name": "Final copy review", "owner": null, "status": "Not Started", "priority": "P3 - Standard", "start": null, "end": null, "percent_complete": null, "notes": null},
+            {"id": "kcm-i2-t4", "name": "Handoff to web dev", "owner": null, "status": "Not Started", "priority": "P3 - Standard", "start": null, "end": null, "percent_complete": null, "notes": null}
+          ]
+        },
+        {
+          "id": "kcm-i3",
+          "name": "EA Hire",
+          "milestones": [
+            {"id": "kcm-i3-m1", "name": "Role scope defined", "target_date": null, "status": "Complete", "owner": "Mitch Gallo", "notes": null},
+            {"id": "kcm-i3-m2", "name": "JD finalized", "target_date": null, "status": "In Progress", "owner": null, "notes": null},
+            {"id": "kcm-i3-m3", "name": "Sourcing", "target_date": null, "status": "Not Started", "owner": null, "notes": null},
+            {"id": "kcm-i3-m4", "name": "Interviews", "target_date": null, "status": "Not Started", "owner": null, "notes": null},
+            {"id": "kcm-i3-m5", "name": "Offer", "target_date": null, "status": "Not Started", "owner": null, "notes": null},
+            {"id": "kcm-i3-m6", "name": "Start", "target_date": null, "status": "Not Started", "owner": null, "notes": null}
+          ],
+          "tasks": [
+            {"id": "kcm-i3-t1", "name": "Draft formal EA role definition w/ out-of-scope boundaries", "owner": "Mitch Gallo", "status": "In Progress", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "notes": null},
+            {"id": "kcm-i3-t2", "name": "Build 30/60/90-day onboarding plan", "owner": null, "status": "Not Started", "priority": "P3 - Standard", "start": null, "end": null, "percent_complete": null, "notes": null},
+            {"id": "kcm-i3-t3", "name": "Clarify role scope with Dani (candidate)", "owner": "Mitch Gallo", "status": "Not Started", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "notes": null},
+            {"id": "kcm-i3-t4", "name": "Finalize JD", "owner": null, "status": "Not Started", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "notes": null}
+          ]
+        },
+        {
+          "id": "kcm-i4",
+          "name": "Firm Overview Deck v2",
+          "milestones": [
+            {"id": "kcm-i4-m1", "name": "Revision brief", "target_date": null, "status": "Complete", "owner": null, "notes": null},
+            {"id": "kcm-i4-m2", "name": "v2 draft", "target_date": null, "status": "In Progress", "owner": null, "notes": null},
+            {"id": "kcm-i4-m3", "name": "Internal review", "target_date": null, "status": "Not Started", "owner": "Mitch Gallo", "notes": null},
+            {"id": "kcm-i4-m4", "name": "Finalized", "target_date": null, "status": "Not Started", "owner": null, "notes": null},
+            {"id": "kcm-i4-m5", "name": "Print-ready", "target_date": null, "status": "Not Started", "owner": null, "notes": null}
+          ],
+          "tasks": [
+            {"id": "kcm-i4-t1", "name": "Address revision brief items", "owner": null, "status": "In Progress", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "notes": null},
+            {"id": "kcm-i4-t2", "name": "Internal review w/ Jay & Travis", "owner": "Mitch Gallo", "status": "Not Started", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "notes": null},
+            {"id": "kcm-i4-t3", "name": "Finalize v2", "owner": null, "status": "Not Started", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "notes": null}
+          ]
+        },
+        {
+          "id": "kcm-i5",
+          "name": "Deutsche Bank Custody",
+          "milestones": [
+            {"id": "kcm-i5-m1", "name": "Checklist drafted", "target_date": null, "status": "Complete", "owner": null, "notes": null},
+            {"id": "kcm-i5-m2", "name": "Reviewed", "target_date": null, "status": "In Progress", "owner": "Katherine Alano", "notes": null},
+            {"id": "kcm-i5-m3", "name": "Submitted", "target_date": null, "status": "Not Started", "owner": null, "notes": null},
+            {"id": "kcm-i5-m4", "name": "Approved", "target_date": null, "status": "Not Started", "owner": null, "notes": null}
+          ],
+          "tasks": [
+            {"id": "kcm-i5-t1", "name": "Internal checklist review", "owner": "Katherine Alano", "status": "In Progress", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "notes": null},
+            {"id": "kcm-i5-t2", "name": "Submit to DB", "owner": null, "status": "Not Started", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "notes": null}
+          ]
+        },
+        {
+          "id": "kcm-i6",
+          "name": "Tech Stack Roadmap",
+          "milestones": [
+            {"id": "kcm-i6-m1", "name": "Coverage map drafted", "target_date": null, "status": "Complete", "owner": null, "notes": null},
+            {"id": "kcm-i6-m2", "name": "Roadmap drafted", "target_date": null, "status": "Complete", "owner": null, "notes": null},
+            {"id": "kcm-i6-m3", "name": "Approved", "target_date": null, "status": "Not Started", "owner": null, "notes": null},
+            {"id": "kcm-i6-m4", "name": "Phased rollout", "target_date": null, "status": "Not Started", "owner": null, "notes": null}
+          ],
+          "tasks": [
+            {"id": "kcm-i6-t1", "name": "Leadership approval of roadmap", "owner": null, "status": "Not Started", "priority": "P2 - High", "start": null, "end": null, "percent_complete": null, "notes": null},
+            {"id": "kcm-i6-t2", "name": "Phase 1 rollout", "owner": null, "status": "Not Started", "priority": "P3 - Standard", "start": null, "end": null, "percent_complete": null, "notes": null}
+          ]
+        },
+        {
+          "id": "kcm-i7",
+          "name": "Brand Voice & Design System",
+          "milestones": [
+            {"id": "kcm-i7-m1", "name": "Voice principles drafted", "target_date": null, "status": "Complete", "owner": null, "notes": null},
+            {"id": "kcm-i7-m2", "name": "Design tokens defined", "target_date": null, "status": "In Progress", "owner": null, "notes": null},
+            {"id": "kcm-i7-m3", "name": "Applied across docs", "target_date": null, "status": "Not Started", "owner": null, "notes": null},
+            {"id": "kcm-i7-m4", "name": "Applied to web", "target_date": null, "status": "Not Started", "owner": null, "notes": null},
+            {"id": "kcm-i7-m5", "name": "Monitoring", "target_date": null, "status": "Not Started", "owner": null, "notes": null}
+          ],
+          "tasks": [
+            {"id": "kcm-i7-t1", "name": "Finalize voice principles", "owner": null, "status": "In Progress", "priority": "P3 - Standard", "start": null, "end": null, "percent_complete": null, "notes": null},
+            {"id": "kcm-i7-t2", "name": "Define design tokens (typography, color) reference sheet", "owner": null, "status": "Not Started", "priority": "P3 - Standard", "start": null, "end": null, "percent_complete": null, "notes": null},
+            {"id": "kcm-i7-t3", "name": "Roll out to marketing materials", "owner": null, "status": "Not Started", "priority": "P3 - Standard", "start": null, "end": null, "percent_complete": null, "notes": null}
+          ]
+        }
+      ]
+    }
+  ],
+  "weekly_ledger": [],
+  "monthly_plan": []
+}

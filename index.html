@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KCM Project Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="firm">Khepera Capital</div>
+        <div class="sub">Project Tracker</div>
+      </div>
+
+      <div class="nav-section">
+        <div class="label">Overview</div>
+        <div class="nav-link" data-view="dashboard"><span class="dot"></span>Dashboard</div>
+        <div class="nav-link" data-view="projects"><span class="dot"></span>Projects</div>
+        <div class="nav-link" data-view="ledger"><span class="dot"></span>Weekly Ledger</div>
+        <div class="nav-link" data-view="plan"><span class="dot"></span>Monthly Plan</div>
+      </div>
+
+      <div class="nav-section" id="projects-nav">
+        <div class="label">Projects</div>
+        <!-- populated at runtime -->
+      </div>
+
+      <div class="footer">
+        <div id="meta-firm"></div>
+        <div id="meta-updated"></div>
+        <div style="margin-top:8px"><a id="export-link" href="#" style="color:var(--olive-soft)">Export data.json</a></div>
+      </div>
+    </aside>
+
+    <main class="main" id="main"></main>
+  </div>
+
+  <div id="modal-root"></div>
+  <div id="toast-root"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
