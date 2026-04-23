@@ -331,17 +331,40 @@
 
     const pnav = $('#projects-nav');
     pnav.innerHTML = '<div class="label">Projects</div>';
+
+    // Group projects by vertical, sort alphabetically within each group.
+    // Vertical display order follows taxonomies.verticals so leadership can
+    // re-prioritize by reordering that array. Any vertical present in data
+    // but missing from the taxonomy still shows up at the bottom.
+    const verticalsOrder = state.data.taxonomies.verticals || [];
+    const byVertical = {};
     for (const p of state.data.projects) {
-      const link = el('div', {
-        class: 'nav-link' + (state.activeProjectId === p.id ? ' active' : ''),
-        onClick: () => {
-          state.view = 'project';
-          state.activeProjectId = p.id;
-          renderAll();
-        }
-      }, [el('span', { class: 'dot' }), p.short_name || p.name]);
-      pnav.appendChild(link);
+      const v = p.vertical || '(Unassigned)';
+      (byVertical[v] = byVertical[v] || []).push(p);
     }
+    const renderGroup = (vname) => {
+      const group = byVertical[vname];
+      if (!group || !group.length) return;
+      pnav.appendChild(el('div', { class: 'sub-label' }, vname));
+      const sorted = group.slice().sort((a, b) =>
+        (a.short_name || a.name || '').localeCompare(b.short_name || b.name || '')
+      );
+      for (const p of sorted) {
+        const link = el('div', {
+          class: 'nav-link sub' + (state.activeProjectId === p.id ? ' active' : ''),
+          onClick: () => {
+            state.view = 'project';
+            state.activeProjectId = p.id;
+            renderAll();
+          }
+        }, [el('span', { class: 'dot' }), p.short_name || p.name]);
+        pnav.appendChild(link);
+      }
+    };
+    const seen = new Set();
+    for (const v of verticalsOrder) { renderGroup(v); seen.add(v); }
+    // Catch any orphans (project.vertical not in taxonomy)
+    for (const v of Object.keys(byVertical)) if (!seen.has(v)) renderGroup(v);
   }
 
   function renderMain() {
@@ -536,6 +559,11 @@
         el('div', { class: 'hint', style: 'margin-top:4px' }, p.stage || '')
       ]),
       el('div', { class: 'actions' }, [
+        el('button', {
+          class: 'btn',
+          title: 'Toggle between key columns and all columns in task tables',
+          onClick: () => { setTaskColsExpanded(!getTaskColsExpanded()); renderAll(); }
+        }, getTaskColsExpanded() ? 'Show key columns' : 'Show all columns'),
         el('button', { class: 'btn', onClick: () => openProjectMetaModal(p) }, 'Edit details'),
         el('button', { class: 'btn primary', onClick: exportJSON }, 'Export data.json')
       ])
@@ -645,16 +673,16 @@
 
   function renderMilestoneTable(project, milestones, initiative) {
     const wrap = el('div', { class: 'table-wrap' });
-    const tbl = el('table', { class: 'data' }, [
+    const tbl = el('table', { class: 'data milestones' }, [
       el('thead', {}, el('tr', {}, [
         th('Milestone'), th('Target date'), th('Status'), th('Owner'), th('Notes'), th('')
       ])),
       el('tbody', {}, milestones.map(m => el('tr', {}, [
-        el('td', {}, el('strong', {}, editText(m, 'name', project))),
-        el('td', {}, editDate(m, 'target_date', project)),
-        el('td', {}, editSelect(m, 'status', state.data.taxonomies.statuses, project, () => renderAll())),
-        el('td', {}, editSelect(m, 'owner', state.data.taxonomies.owners, project)),
-        el('td', {}, editText(m, 'notes', project, 'Add note...')),
+        el('td', { class: 'col-name' }, el('strong', {}, editText(m, 'name', project))),
+        el('td', { class: 'col-date' }, editDate(m, 'target_date', project)),
+        el('td', { class: 'col-status' }, editSelect(m, 'status', state.data.taxonomies.statuses, project, () => renderAll())),
+        el('td', { class: 'col-owner' }, editSelect(m, 'owner', state.data.taxonomies.owners, project)),
+        el('td', { class: 'col-notes' }, editText(m, 'notes', project, 'Add note...')),
         el('td', { style: 'width:1%;white-space:nowrap' },
           el('button', {
             class: 'btn sm danger ghost',
@@ -674,29 +702,55 @@
     return wrap;
   }
 
+  // Column definitions for the task table.
+  //   compact: shown when the user collapses columns (default)
+  //   full:    shown when the user clicks "Show all columns"
+  // Each column: header label, render(t, project) -> td-content, optional td class.
+  const TASK_COLS = {
+    name:        { label: 'Task',         render: (t, p) => editText(t, 'name', p),                                         cls: 'col-name'   },
+    owner:       { label: 'Owner',        render: (t, p) => editSelect(t, 'owner', state.data.taxonomies.owners, p),         cls: 'col-owner'  },
+    status:      { label: 'Status',       render: (t, p) => editSelect(t, 'status', state.data.taxonomies.statuses, p, () => renderAll()), cls: 'col-status' },
+    priority:    { label: 'Priority',     render: (t, p) => editSelect(t, 'priority', state.data.taxonomies.priorities, p),  cls: 'col-priority' },
+    end:         { label: 'Due',          render: (t, p) => editDate(t, 'end', p),                                            cls: 'col-date'   },
+    pct:         { label: '%',            render: (t, p) => editNumber(t, 'percent_complete', p, '0-100'),                    cls: 'num col-pct' },
+    start:       { label: 'Start',        render: (t, p) => editDate(t, 'start', p),                                          cls: 'col-date'   },
+    info:        { label: 'Info needed',  render: (t, p) => editText(t, 'info_needed_from', p, 'From...'),                    cls: 'col-info'   },
+    counterparty:{ label: 'Counterparty', render: (t, p) => editText(t, 'counterparty', p, '—'),                              cls: 'col-cp'     },
+    next_action: { label: 'Next action',  render: (t, p) => editText(t, 'next_action', p, '—'),                               cls: 'col-next'   },
+    budget:      { label: 'Budget',       render: (t, p) => editNumber(t, 'budget', p, '$'),                                  cls: 'num col-money' },
+    actual:      { label: 'Actual',       render: (t, p) => editNumber(t, 'actual', p, '$'),                                  cls: 'num col-money' },
+    last_update: { label: 'Last update',  render: (t, p) => editDate(t, 'last_update', p),                                    cls: 'col-date'   },
+    notes:       { label: 'Notes',        render: (t, p) => editText(t, 'notes', p, 'Add note...'),                           cls: 'col-notes'  }
+  };
+  const COMPACT_COLS = ['name', 'owner', 'status', 'priority', 'end', 'pct'];
+  const FULL_COLS    = ['name', 'owner', 'status', 'priority', 'start', 'end', 'pct',
+                        'info', 'counterparty', 'next_action', 'budget', 'actual',
+                        'last_update', 'notes'];
+
+  function getTaskColsExpanded() {
+    return localStorage.getItem('kcm_tracker_task_cols') === 'full';
+  }
+  function setTaskColsExpanded(expanded) {
+    localStorage.setItem('kcm_tracker_task_cols', expanded ? 'full' : 'compact');
+  }
+
   function renderTaskTable(project, tasks, initiative, workstreamHint) {
-    const wrap = el('div', { class: 'table-wrap' });
-    const tbl = el('table', { class: 'data' }, [
-      el('thead', {}, el('tr', {}, [
-        th('Task'), th('Owner'), th('Status'), th('Priority'), th('Start'), th('End'), th('%'), th('Info needed'), th('')
-      ])),
-      el('tbody', {}, tasks.map(t => el('tr', {}, [
-        el('td', {}, editText(t, 'name', project)),
-        el('td', {}, editSelect(t, 'owner', state.data.taxonomies.owners, project)),
-        el('td', {}, editSelect(t, 'status', state.data.taxonomies.statuses, project, () => renderAll())),
-        el('td', {}, editSelect(t, 'priority', state.data.taxonomies.priorities, project)),
-        el('td', {}, editDate(t, 'start', project)),
-        el('td', {}, editDate(t, 'end', project)),
-        el('td', { class: 'num' }, editNumber(t, 'percent_complete', project, '0-100')),
-        el('td', {}, editText(t, 'info_needed_from', project, 'From...')),
-        el('td', { style: 'width:1%;white-space:nowrap' },
+    const expanded = getTaskColsExpanded();
+    const cols = (expanded ? FULL_COLS : COMPACT_COLS).map(k => TASK_COLS[k]);
+    const wrap = el('div', { class: 'table-wrap' + (expanded ? ' expanded' : '') });
+    const tbl = el('table', { class: 'data tasks' + (expanded ? ' wide' : '') }, [
+      el('thead', {}, el('tr', {}, cols.map(c => th(c.label)).concat([th('')]))),
+      el('tbody', {}, tasks.map(t => el('tr', {}, cols.map(c =>
+        el('td', { class: c.cls || '' }, c.render(t, project))
+      ).concat([
+        el('td', { class: 'col-delete', style: 'width:1%;white-space:nowrap' },
           el('button', {
             class: 'btn sm danger ghost',
             title: 'Delete task',
             onClick: () => deleteTask(project, initiative, t.id)
           }, '×')
         )
-      ])))
+      ]))))
     ]);
     wrap.appendChild(tbl);
     wrap.appendChild(el('div', { style: 'margin-top:8px' }, [
