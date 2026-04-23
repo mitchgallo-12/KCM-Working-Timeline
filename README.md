@@ -1,4 +1,5 @@
-[README.md](https://github.com/user-attachments/files/26982168/README.md)
+[README.md](https://github.com/user-attachments/files/26991290/README.md)
+
 # KCM Project Tracker — Web
 
 A self-hosted project and capital-allocation tracker for Khepera Capital Management.
@@ -11,11 +12,15 @@ Static HTML + JSON. No build step, no backend, no dependencies. Edits are staged
 
 ```
 KCM_Project_Tracker_Web/
-├── index.html    # Shell — sidebar nav, view containers
-├── styles.css    # KCM brand palette + layout
-├── app.js        # Data load, state, views, Gantt, edits, export
-├── data.json     # The single source of truth (commit changes here)
-└── README.md     # This file
+├── index.html              # Shell — sidebar nav, view containers
+├── styles.css              # KCM brand palette + layout
+├── app.js                  # Data load, state, views, Gantt, edits, export, sync
+├── data.json               # Local source of truth (also seed for the Sheet backend)
+├── README.md               # This file
+└── google-sheets/          # Optional Google Sheets backend (multi-user editing)
+    ├── Code.gs             # Apps Script — load/save/seed handlers
+    ├── Seed.gs             # One-time snapshot used to seed the Sheet
+    └── SETUP.md            # 15-minute setup walkthrough
 ```
 
 ---
@@ -67,6 +72,14 @@ As always, these edits are staged locally until you click **Export data.json** a
 When you're ready to save, click **Export data.json** (top-right of any view, or the link at the bottom of the sidebar). This downloads a fresh `data.json`.
 
 **Replace the file in this folder with the downloaded one**, then commit and push the change. That commit IS your save.
+
+### Multi-user editing — Google Sheets backend (optional)
+
+For the leadership team (Mitch, Jay, Travis, Katherine) to edit the same dataset without exporting/committing, the tracker can sync to a Google Sheet.
+
+In the sidebar, click **Sync settings…** to paste an Apps Script Web App URL, then use **↓ Pull** and **↑ Push** to round-trip with the Sheet. Edits made directly in the Sheet show up in the tracker on Pull; edits made in the tracker show up in the Sheet on Push.
+
+One-time setup is in `google-sheets/SETUP.md` — about 15 minutes to create the Sheet, paste in `Code.gs` and `Seed.gs`, deploy as a Web App, and share the URL with your team.
 
 ### Reset
 
