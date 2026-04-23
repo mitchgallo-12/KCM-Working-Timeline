@@ -1192,13 +1192,190 @@
     renderAll();
   }
 
-  // ----- Export link in sidebar -----
+  // ----- Google Sheets sync -----
+  // Settings live in localStorage so each teammate configures their own
+  // browser once. The Apps Script web app URL points at a Sheet shared with
+  // the leadership team (Mitch / Jay / Travis / Katherine).
+  const SYNC_KEYS = {
+    url: 'kcm_tracker_sync_url',
+    lastPulled: 'kcm_tracker_sync_last_pulled',
+    lastPushed: 'kcm_tracker_sync_last_pushed'
+  };
+
+  function getSyncUrl() {
+    return (localStorage.getItem(SYNC_KEYS.url) || '').trim();
+  }
+  function setSyncUrl(url) {
+    localStorage.setItem(SYNC_KEYS.url, (url || '').trim());
+  }
+
+  function fmtSyncTime(iso) {
+    if (!iso) return null;
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return null;
+    const now = new Date();
+    const sameDay = d.toDateString() === now.toDateString();
+    return sameDay
+      ? d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
+      : d.toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+  }
+
+  function renderSyncStatus(extra) {
+    const el = $('#sync-status');
+    if (!el) return;
+    const url = getSyncUrl();
+    const pulled = fmtSyncTime(localStorage.getItem(SYNC_KEYS.lastPulled));
+    const pushed = fmtSyncTime(localStorage.getItem(SYNC_KEYS.lastPushed));
+    el.classList.remove('ok', 'err');
+    if (extra && extra.error) {
+      el.textContent = extra.error;
+      el.classList.add('err');
+      return;
+    }
+    if (!url) {
+      el.textContent = 'Sync not configured';
+      return;
+    }
+    if (extra && extra.busy) {
+      el.textContent = extra.busy;
+      return;
+    }
+    const parts = [];
+    if (pulled) parts.push('Pulled ' + pulled);
+    if (pushed) parts.push('Pushed ' + pushed);
+    el.textContent = parts.length ? parts.join(' · ') : 'Connected — never synced';
+    if (parts.length) el.classList.add('ok');
+    // Disable Push when nothing has changed
+    const pushBtn = $('#btn-push');
+    const pullBtn = $('#btn-pull');
+    if (pushBtn) pushBtn.disabled = !state.dirty || !url;
+    if (pullBtn) pullBtn.disabled = !url;
+  }
+
+  // For Pull-when-dirty: show the user a choice rather than silently clobbering.
+  function confirmPullOverDirty() {
+    return confirm(
+      'You have unsaved local edits. Pulling will overwrite them with the latest from the Sheet.\n\n' +
+      'OK to discard your edits and pull, Cancel to keep your edits.'
+    );
+  }
+
+  async function pullFromSheet() {
+    const url = getSyncUrl();
+    if (!url) { openSyncSettingsModal(); return; }
+    if (state.dirty && !confirmPullOverDirty()) return;
+    renderSyncStatus({ busy: 'Pulling…' });
+    try {
+      const res = await fetch(url + (url.indexOf('?') >= 0 ? '&' : '?') + 'cb=' + Date.now(), {
+        method: 'GET',
+        redirect: 'follow'
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const body = await res.json();
+      if (!body.ok) throw new Error(body.error || 'Sheet returned ok=false');
+      if (!body.data || !body.data.projects) throw new Error('Sheet returned no project data');
+      state.data = body.data;
+      saveWorkingCopy();
+      state.dirty = false;
+      localStorage.setItem(SYNC_KEYS.lastPulled, new Date().toISOString());
+      renderAll();
+      renderSyncStatus();
+      toast('Pulled ' + (body.data.projects.length || 0) + ' projects from Sheet');
+    } catch (err) {
+      console.error('Pull failed', err);
+      renderSyncStatus({ error: 'Pull failed: ' + err.message });
+      toast('Pull failed — see sidebar');
+    }
+  }
+
+  async function pushToSheet() {
+    const url = getSyncUrl();
+    if (!url) { openSyncSettingsModal(); return; }
+    if (!state.dirty) { toast('Nothing to push'); return; }
+    renderSyncStatus({ busy: 'Pushing…' });
+    try {
+      // Stamp the meta.updated date so the Sheet matches what an Export would write
+      state.data.meta.updated = todayISO();
+      const res = await fetch(url, {
+        method: 'POST',
+        // Apps Script web apps don't honor CORS preflights for application/json,
+        // so use text/plain (which the script parses identically via e.postData.contents).
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ data: state.data }),
+        redirect: 'follow'
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const body = await res.json();
+      if (!body.ok) throw new Error(body.error || 'Sheet returned ok=false');
+      state.dirty = false;
+      saveWorkingCopy();
+      localStorage.setItem(SYNC_KEYS.lastPushed, body.savedAt || new Date().toISOString());
+      $('#meta-updated').textContent = 'Updated ' + state.data.meta.updated;
+      renderSyncStatus();
+      toast('Pushed to Sheet');
+    } catch (err) {
+      console.error('Push failed', err);
+      renderSyncStatus({ error: 'Push failed: ' + err.message });
+      toast('Push failed — see sidebar');
+    }
+  }
+
+  function openSyncSettingsModal() {
+    const root = $('#modal-root');
+    root.innerHTML = '';
+    const urlInput = el('input', {
+      value: getSyncUrl(),
+      placeholder: 'https://script.google.com/macros/s/ABC.../exec',
+      style: 'width:100%; min-width:480px;'
+    });
+    const help = el('div', { class: 'hint', style: 'margin-top:6px; font-size:0.8rem;' },
+      'Paste the Web app URL from your Apps Script deployment. ' +
+      'Anyone on the leadership team using this URL will see the same data. ' +
+      'See google-sheets/SETUP.md in the repo for the one-time setup steps.');
+    const modal = el('div', { class: 'modal' }, [
+      el('h3', {}, 'Google Sheets sync'),
+      row('Web app URL', urlInput),
+      help,
+      el('div', { class: 'actions', style: 'margin-top:14px; display:flex; gap:8px; justify-content:flex-end;' }, [
+        el('button', { class: 'btn', onClick: () => root.innerHTML = '' }, 'Cancel'),
+        el('button', { class: 'btn primary', onClick: () => {
+          setSyncUrl(urlInput.value);
+          root.innerHTML = '';
+          renderSyncStatus();
+          toast(getSyncUrl() ? 'Sync URL saved' : 'Sync URL cleared');
+        } }, 'Save')
+      ])
+    ]);
+    const backdrop = el('div', { class: 'modal-backdrop', onClick: (e) => {
+      if (e.target === backdrop) root.innerHTML = '';
+    } }, modal);
+    root.appendChild(backdrop);
+    setTimeout(() => urlInput.focus(), 0);
+  }
+
+  // ----- Export link + sync controls in sidebar -----
   function wireSidebar() {
     const link = $('#export-link');
     if (link) {
       link.addEventListener('click', (e) => { e.preventDefault(); exportJSON(); });
     }
+    const settingsLink = $('#sync-settings-link');
+    if (settingsLink) {
+      settingsLink.addEventListener('click', (e) => { e.preventDefault(); openSyncSettingsModal(); });
+    }
+    const pullBtn = $('#btn-pull');
+    if (pullBtn) pullBtn.addEventListener('click', () => pullFromSheet());
+    const pushBtn = $('#btn-push');
+    if (pushBtn) pushBtn.addEventListener('click', () => pushToSheet());
+    renderSyncStatus();
   }
+
+  // Hook markDirty so the Push button live-enables as edits land
+  const _origMarkDirty = markDirty;
+  markDirty = function () {
+    _origMarkDirty();
+    renderSyncStatus();
+  };
 
   // ----- Init -----
   async function init() {
@@ -1207,6 +1384,7 @@
     renderAll();
     // Expose for debugging
     window.KCM = state;
+    window.KCM_sync = { pull: pullFromSheet, push: pushToSheet, openSettings: openSyncSettingsModal };
   }
 
   document.addEventListener('DOMContentLoaded', init);
