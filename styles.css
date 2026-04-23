@@ -150,6 +150,18 @@ a:hover { text-decoration: underline; }
   border-top: 1px solid rgba(255,255,247,.08);
 }
 
+#sync-nav .sync-status {
+  font-size: 0.72rem;
+  color: var(--grey-soft);
+  padding: 2px 0 8px;
+  line-height: 1.35;
+}
+#sync-nav .sync-status.ok { color: var(--olive-soft); }
+#sync-nav .sync-status.err { color: #e08484; }
+#sync-nav .sync-actions { display: flex; gap: 6px; }
+#sync-nav .sync-actions .btn { flex: 1; }
+#sync-nav .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
 /* ---------- Main ---------- */
 .main {
   padding: 28px 36px 48px;
