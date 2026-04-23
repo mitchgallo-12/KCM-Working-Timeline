@@ -142,6 +142,19 @@ a:hover { text-decoration: underline; }
 }
 .nav-link.active .dot { background: var(--porcelain); }
 
+/* Project sub-grouping by vertical */
+.sub-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--olive-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  padding: 10px 20px 4px 20px;
+  opacity: 0.75;
+}
+.sub-label:first-of-type { padding-top: 6px; }
+.nav-link.sub { padding-left: 28px; font-size: 0.86rem; }
+
 .sidebar .footer {
   margin-top: auto;
   padding: 16px 20px 0;
@@ -294,6 +307,42 @@ table.data tbody tr:last-child td { border-bottom: 0; }
 table.data tbody tr:hover { background: var(--porcelain-warm); }
 table.data td.num { text-align: right; font-variant-numeric: tabular-nums; }
 table.data td.center { text-align: center; }
+
+/* Task table column min-widths — prevents the classic "Compl"/"At Risl"
+   truncation in the compact view. When the table is in .wide mode the
+   wrapper gets horizontal scroll. */
+table.data.tasks          { table-layout: auto; }
+table.data.tasks .col-name     { min-width: 180px; }
+table.data.tasks .col-owner    { min-width: 110px; }
+table.data.tasks .col-status   { min-width: 130px; }
+table.data.tasks .col-priority { min-width: 90px;  }
+table.data.tasks .col-date     { min-width: 120px; white-space: nowrap; }
+table.data.tasks .col-pct      { min-width: 64px;  }
+table.data.tasks .col-info     { min-width: 130px; }
+table.data.tasks .col-cp       { min-width: 140px; }
+table.data.tasks .col-next     { min-width: 180px; }
+table.data.tasks .col-money    { min-width: 100px; }
+table.data.tasks .col-notes    { min-width: 200px; }
+table.data.tasks .col-delete   { width: 1%; white-space: nowrap; }
+
+/* When the user expands all columns the table grows wider than the viewport
+   and the wrapper scrolls horizontally. */
+.table-wrap.expanded        { overflow-x: auto; }
+table.data.tasks.wide       { min-width: 1500px; }
+
+/* Selects inside task cells fill the cell instead of capping at 200px so
+   short labels ("Complete", "At Risk") render fully. */
+table.data.tasks select.edit,
+table.data.tasks input.edit { max-width: none; }
+
+/* Milestone table shares the same no-truncate behaviour for selects. */
+table.data.milestones .col-name   { min-width: 200px; }
+table.data.milestones .col-date   { min-width: 120px; white-space: nowrap; }
+table.data.milestones .col-status { min-width: 130px; }
+table.data.milestones .col-owner  { min-width: 110px; }
+table.data.milestones .col-notes  { min-width: 220px; }
+table.data.milestones select.edit,
+table.data.milestones input.edit  { max-width: none; }
 
 /* editable cells */
 .edit-cell {
